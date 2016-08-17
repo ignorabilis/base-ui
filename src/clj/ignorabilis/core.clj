@@ -3,9 +3,13 @@
     (:require
       [clojure.string :as str]
       [ring.middleware.defaults :refer [site-defaults]]
+      [ring.middleware.resource :refer [wrap-resource]]
+      [ring.middleware.content-type :refer [wrap-content-type]]
+      [ring.middleware.not-modified :refer [wrap-not-modified]]
       [compojure.core :as comp :refer (defroutes GET POST)]
       [compojure.route :as route]
       [hiccup.core :as hiccup]
+      [hiccup.page :as hpage]
       [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
       [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]
       [taoensso.sente :as sente]
@@ -27,25 +31,32 @@
 ;;;; Server-side setup
 
 
+(defn html5 [html]
+  (str (:html5 hpage/doctype) (hiccup/html html)))
+
 (defn landing-pg-handler [req]
-      (hiccup/html
-        [:h1 "Sente reference example"]
-        [:p "An Ajax/WebSocket connection has been configured (random)."]
-        [:hr]
-        [:p [:strong "Step 1: "] "Open browser's JavaScript console."]
-        [:p [:strong "Step 2: "] "Try: "
-         [:button#btn1 {:type "button"} "chsk-send! (w/o reply)"]
-         [:button#btn2 {:type "button"} "chsk-send! (with reply)"]]
-        ;;
-        [:p [:strong "Step 3: "] "See browser's console + nREPL's std-out."]
-        ;;
-        [:hr]
-        [:h2 "Login with a user-id"]
-        [:p "The server can use this id to send events to *you* specifically."]
-        [:p [:input#input-login {:type :text :placeholder "User-id"}]
-         [:button#btn-login {:type "button"} "Secure login!"]]
-        [:script {:src "main.js"}]                          ; Include our cljs target
-        ))
+  (html5
+    [:html
+     [:head
+      [:meta {:charset "utf-8"}]
+      (apply hpage/include-css ["/foundation/css/foundation.css"
+                                ])]
+     [:h1 "Sente reference example"]
+     [:p "An Ajax/WebSocket connection has been configured (random)."]
+     [:hr]
+     [:p [:strong "Step 1: "] "Open browser's JavaScript console."]
+     [:p [:strong "Step 2: "] "Try: "
+      [:button#btn1.button {:type "button"} "chsk-send! (w/o reply)"]
+      [:button#btn2.button.success {:type "button"} "chsk-send! (with reply)"]]
+     ;;
+     [:p [:strong "Step 3: "] "See browser's console + nREPL's std-out."]
+     ;;
+     [:hr]
+     [:h2 "Login with a user-id"]
+     [:p "The server can use this id to send events to *you* specifically."]
+     [:p [:input#input-login {:type :text :placeholder "User-id"}]
+      [:button#btn-login.button {:type "button"} "Secure login!"]]
+     [:script {:src "main.js"}]]))
 
 (defn login!
       "Here's where you'll add your server-side login/auth procedure (Friend, etc.).
@@ -64,6 +75,7 @@
            (POST "/chsk" req ((:ring-ajax-post (:sente system)) req))
            (POST "/login" req (login! req))
            ;;
+           (route/resources "/")
            (route/not-found "<h1>Page not found</h1>"))
 
 (def my-ring-handler
@@ -77,7 +89,11 @@
        ;; `ring.middleware.defaults/wrap-defaults` - but you'll need to ensure
        ;; that they're included yourself if you're not using `wrap-defaults`.
        ;;
-       (ring.middleware.defaults/wrap-defaults my-routes ring-defaults-config)))
+       (-> my-routes
+           (ring.middleware.defaults/wrap-defaults ring-defaults-config)
+           (wrap-resource "public")
+           (wrap-content-type)
+           (wrap-not-modified))))
 
 ;;;; Routing handlers
 

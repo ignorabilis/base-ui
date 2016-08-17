@@ -99,7 +99,7 @@
                                                                     (if-not login-successful?
                                                                             (debugf "Login failed")
                                                                             (do
-                                                                              (debugf "Login successful")
+                                                                              (debugf "Login successfull")
                                                                               (sente/chsk-reconnect! chsk))))))))))))
 
 (def router_ (atom nil))

@@ -1,7 +1,7 @@
 #!/usr/bin/env boot
 
 (set-env!
-  :resource-paths #{"src/clj" "src/cljs"}
+  :resource-paths #{"src/clj" "src/cljs" "resources"}
   :dependencies '[[adzerk/boot-cljs "1.7.48-5" :scope "test"]
                   [adzerk/boot-cljs-repl "0.3.0" :scope "test"]
                   [adzerk/boot-reload "0.4.12" :scope "test"]
@@ -94,12 +94,14 @@
 
 (deftask ignorabilis-dev []
          (comp
-           (environ :env {:http-port 3019})
+           (environ :env {:http-port 3000})
            (watch)
            (system :sys #'dev-system :auto-start true :hot-reload true :files ["core.clj"])
            (reload)
+
+           (cljs-repl :nrepl-opts {:port 40001})
            (cljs :source-map true)
-           (repl :server true)))
+           (repl :server true :port 40000)))
 
 (defn -main [& args]
       (require 'ignorabilis.core)
