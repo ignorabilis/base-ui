@@ -1,4 +1,4 @@
-(ns ignorabilis.demo.components.demo
+(ns ignorabilis.views.demo.components.demo
   (:require [ignorabilis.comm.channel-sockets :as sockets]
             [clojure.string :as str]
             [taoensso.timbre :as timbre]
