@@ -1,6 +1,7 @@
 (ns ignorabilis.core
   (:require [ignorabilis.comm.channel-sockets :as sockets]
-            [ignorabilis.demo.components.demo :as demo]
+            [ignorabilis.home.core :as home]
+            [ignorabilis.common.layout.core :as layout]
             [cljs.core.async :refer [<! >! put! chan]]
             [taoensso.timbre :as timbre]
             [taoensso.sente :as sente :refer [cb-success?]]
@@ -52,7 +53,7 @@
 
 (defn mount-root []
   (r/render
-    [demo/demo-page]
+    [layout/page-layout home/home-page]
     (gdom/getElement "ignorabilis-app")))
 
 (defn init! []
