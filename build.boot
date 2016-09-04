@@ -1,20 +1,20 @@
 #!/usr/bin/env boot
 
-(set-env! :resource-paths #{"src/clj" "src/cljs" "resources"}
-          :dependencies '[[adzerk/boot-cljs "1.7.48-5" :scope "test"]
-                          [adzerk/boot-cljs-repl "0.3.0" :scope "test"]
+(set-env! :resource-paths #{"src/clj" "src/cljc" "src/cljs" "resources"}
+          :dependencies '[[adzerk/boot-cljs "1.7.228-1" :scope "test"]
+                          [adzerk/boot-cljs-repl "0.3.2" :scope "test"]
                           [adzerk/boot-reload "0.4.12" :scope "test"]
                           [pandeiro/boot-http "0.7.1-SNAPSHOT" :scope "test"]
                           [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
                           [com.cemerick/piggieback "0.2.1" :scope "test"]
                           [weasel "0.7.0" :scope "test"]
-                          [org.clojure/tools.nrepl "0.2.10" :scope "test"]
+                          [org.clojure/tools.nrepl "0.2.12" :scope "test"]
 
-                          [org.clojure/clojure "1.7.0"]
-                          [org.clojure/clojurescript "1.7.228"]
+                          [org.clojure/clojure "1.8.0"]
+                          [org.clojure/clojurescript "1.9.227"]
 
-                          [environ "1.0.0"]
-                          [danielsz/boot-environ "0.0.4"]
+                          [environ "1.1.0"]
+                          [boot-environ "1.1.0"]
                           [org.danielsz/system "0.1.8"]
                           [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                           [com.taoensso/sente "1.10.0"]
@@ -37,7 +37,7 @@
          '[pandeiro.boot-http :refer [serve]]
          '[reloaded.repl :refer [init start stop go reset]]
          '[ignorabilis.system.core :refer [dev-system]]
-         '[danielsz.boot-environ :refer [environ]]
+         '[environ.boot :refer [environ]]
          '[system.boot :refer [system run]])
 
 (def version "0.1.0.0-SNAPSHOT")
@@ -80,10 +80,20 @@
          []
          (generate-lein-project-file! :keep-project true))
 
+(deftask trace-task
+         "Prints the fileset."
+         []
+         (fn [next-task]
+           (fn [fileset]
+             (prn fileset)
+             (next-task fileset))))
+
 (deftask ignorabilis-build
          "Builds an uberjar of the ignorabilis project that can be run with java -jar"
          []
          (comp
+           (environ :env {:is-dev "false"
+                          :http-port "3000"})
            (aot :namespace '#{ignorabilis.core})
            (pom :project 'ignorabilis
                 :version version)
@@ -94,7 +104,8 @@
 
 (deftask ignorabilis-dev []
          (comp
-           (environ :env {:http-port 3000})
+           (environ :env {:is-dev "true"
+                          :http-port "3000"})
            (watch)
            (system :sys #'dev-system :auto-start true :hot-reload true :files ["core.clj"])
            (reload)

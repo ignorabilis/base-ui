@@ -1,5 +1,6 @@
 (ns ignorabilis.core
-  (:require [ignorabilis.comm.channel-sockets :as sockets]
+  (:require [ignorabilis.common.env :refer [ienv dev?]]
+            [ignorabilis.comm.channel-sockets :as sockets]
             [ignorabilis.views.home.core :as home]
             [ignorabilis.common.layout.core :as layout]
             [ignorabilis.services.core :as services]
@@ -10,11 +11,14 @@
             [reagent.core :as r :refer [atom]])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
-(timbre/debug "ClojureScript appears to have loaded correctly.")
-
 (defn init-logging []
-  #_(when is-dev
-    (sente/set-logging-level! :trace)))
+  (when dev?
+    (enable-console-print!)
+    (timbre/set-level! :trace)
+    (timbre/debug "ClojureScript appears to have loaded correctly.")))
+
+(defn init-plugins []
+  (.foundation (js/$ js/document)))
 
 (defn mount-root []
   (r/render
@@ -31,7 +35,8 @@
 
 (defn start! []
   (init-logging)
-  #_(hook-browser-navigation!)
+  (init-plugins)
+  #_(init-browser-navigation!)
   (sockets/init-channel-sockets)
   (mount-root)
   (start-router!))

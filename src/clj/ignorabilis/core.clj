@@ -38,9 +38,12 @@
     [:html
      [:head
       [:meta {:charset "utf-8"}]
-      (apply hpage/include-css ["/foundation/css/foundation.css"])]
+      (apply hpage/include-css ["/site.css"
+                                "/foundation/css/foundation.css"])]
      [:div#ignorabilis-app
       "Loading..."]
+     [:script {:src "/foundation/js/jquery.js"}]
+     [:script {:src "/foundation/js/foundation.min.js"}]
      [:script {:src "main.js"}]]))
 
 (defn login!
