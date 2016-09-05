@@ -1,0 +1,101 @@
+body, #ignorabilis-app, .main {
+    display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+
+    height: 100%;
+}
+
+header, footer {
+    flex: none;
+    -webkit-flex: none;
+    -ms-flex: none;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem 4rem;
+    color: white;
+    background-color: #222222;
+}
+
+footer h4 {
+    font-size: 1em;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-top: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.footer-links {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.footer-links li {
+    margin-top: .5em;
+}
+
+.body {
+    display: flex;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+
+    flex: 1 0 auto;
+    -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+
+    flex-direction: column;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+}
+
+.full-width {
+    width: 100%;
+    max-width: initial !important;
+}
+
+@media only screen and (min-width: 40.063em) {
+    footer .column:nth-child(n+2) {
+        border-left: 1px solid #b3b3b3;
+        min-height: 280px;
+    }
+}
+
+.top-bar-right ul {
+    justify-content: flex-end;
+}
+
+.menu-text {
+    color: #fff;
+}
+
+@media only screen and (max-width: 40em) {
+    .menu-text {
+        display: none !important;
+    }
+}
+
+@media only screen and (min-width: 40em) {
+}
+
+.dropdown.menu .submenu {
+    border: none;
+}
+
+.dropdown.menu .is-dropdown-submenu-parent.is-right-arrow > a::after {
+    border-color: #fff transparent transparent;
+}
+
+.is-drilldown-submenu-parent > a::after {
+    border-color: transparent transparent transparent #fff;
+}
+
+.js-drilldown-back::before {
+    border-color: transparent #fff transparent transparent;
+}

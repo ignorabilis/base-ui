@@ -4,7 +4,32 @@
 
 (defonce skills-state (r/atom {:query "" :skills [{:label "Foundation"}
                                                   {:label "Bootstrap"}
-                                                  {:label "C#"}]}))
+                                                  {:label "C#"}
+                                                  {:label "C1"}
+                                                  {:label "C2"}
+                                                  {:label "C3"}
+                                                  {:label "C4"}
+                                                  {:label "C5"}
+                                                  {:label "C6"}
+                                                  {:label "C7"}
+                                                  {:label "C8"}
+                                                  {:label "C9"}
+                                                  {:label "C10"}
+                                                  {:label "C11"}
+                                                  {:label "C12"}
+                                                  {:label "C13"}
+                                                  {:label "C14"}
+                                                  {:label "C15"}
+                                                  {:label "C16"}
+                                                  {:label "C17"}
+                                                  {:label "C18"}
+                                                  {:label "C19"}
+                                                  {:label "C20"}
+                                                  {:label "C21"}
+                                                  {:label "C22"}
+                                                  {:label "C23"}
+                                                  {:label "C24"}
+                                                  {:label "C25"}]}))
 
 (defn case-insensitive-search [query-str coll item-key-path]
   (if (string/blank? query-str)
