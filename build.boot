@@ -4,8 +4,6 @@
           :dependencies '[[adzerk/boot-cljs "1.7.228-1" :scope "test"]
                           [adzerk/boot-cljs-repl "0.3.2" :scope "test"]
                           [adzerk/boot-reload "0.4.12" :scope "test"]
-                          [pandeiro/boot-http "0.7.1-SNAPSHOT" :scope "test"]
-                          [crisptrutski/boot-cljs-test "0.2.2-SNAPSHOT" :scope "test"]
                           [com.cemerick/piggieback "0.2.1" :scope "test"]
                           [weasel "0.7.0" :scope "test"]
                           [org.clojure/tools.nrepl "0.2.12" :scope "test"]
@@ -15,7 +13,7 @@
 
                           [environ "1.1.0"]
                           [boot-environ "1.1.0"]
-                          [org.danielsz/system "0.1.8"]
+                          [mount "0.1.10"]
                           [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                           [com.taoensso/sente "1.10.0"]
                           [com.taoensso/timbre "4.7.0"]
@@ -33,12 +31,7 @@
 (require '[adzerk.boot-cljs :refer [cljs]]
          '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
          '[adzerk.boot-reload :refer [reload]]
-         '[crisptrutski.boot-cljs-test :refer [exit! test-cljs]]
-         '[pandeiro.boot-http :refer [serve]]
-         '[reloaded.repl :refer [init start stop go reset]]
-         '[ignorabilis.system.core :refer [dev-system]]
-         '[environ.boot :refer [environ]]
-         '[system.boot :refer [system run]])
+         '[environ.boot :refer [environ]])
 
 (def version "0.1.0.0-SNAPSHOT")
 
@@ -92,22 +85,21 @@
          "Builds an uberjar of the ignorabilis project that can be run with java -jar"
          []
          (comp
-           (environ :env {:is-dev "false"
+           (environ :env {:is-dev    "false"
                           :http-port "3000"})
-           (aot :namespace '#{ignorabilis.core})
+           (cljs :optimizations :advanced)
+           (aot :all true)
            (pom :project 'ignorabilis
                 :version version)
            (uber)
            (jar :main 'ignorabilis.core)
-           (cljs :optimizations :advanced)
            (target)))
 
 (deftask ignorabilis-dev []
          (comp
-           (environ :env {:is-dev "true"
+           (environ :env {:is-dev    "true"
                           :http-port "3000"})
            (watch)
-           (system :sys #'dev-system :auto-start true :hot-reload true :files ["core.clj"])
            (reload)
 
            (cljs-repl :nrepl-opts {:port 40001})
@@ -117,4 +109,3 @@
 (defn -main [& args]
   (require 'ignorabilis.core)
   (apply (resolve 'ignorabilis.core/-main) args))
-
