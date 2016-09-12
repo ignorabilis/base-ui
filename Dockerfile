@@ -3,7 +3,8 @@ MAINTAINER Irina Yaroslavova Stefanova
 
 COPY . /opt/ignorabilis-src
 
-RUN boot ignorabilis-build \
+RUN cd /opt/ignorabilis-src \
+    && boot ignorabilis-build \
 	&& cp /opt/ignorabilis-src/target/project.jar /opt/ignorabilis \
 	&& rm -rf /opt/ignorabilis-src
 
