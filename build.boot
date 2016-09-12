@@ -73,12 +73,21 @@
          []
          (generate-lein-project-file! :keep-project true))
 
+(defn get-boot-file [coll file-name]
+  (if-let [benv (first (filter #(= (tmp-path %) file-name) coll))]
+    (slurp (tmp-file benv))
+    "not found"))
+
 (deftask trace-task
-         "Prints the fileset."
+         "Prints a file from the fileset."
          []
          (fn [next-task]
            (fn [fileset]
-             (prn fileset)
+             (let [uf (user-files fileset)
+                   if (input-files fileset)
+                   of (output-files fileset)
+                   uenv (get-boot-file if ".boot-env")]
+               (prn uenv))
              (next-task fileset))))
 
 (deftask ignorabilis-build
@@ -87,7 +96,7 @@
          (comp
            (environ :env {:is-dev    "false"
                           :http-port "3000"})
-           (cljs :optimizations :advanced)
+           (cljs :optimizations :advanced :compiler-options {:externs ["public/common/common.ext.js"]})
            (aot :all true)
            (pom :project 'ignorabilis
                 :version version)
@@ -101,7 +110,6 @@
                           :http-port "3000"})
            (watch)
            (reload)
-
            (cljs-repl :nrepl-opts {:port 40001})
            (cljs :source-map true)
            (repl :server true :port 40000)))

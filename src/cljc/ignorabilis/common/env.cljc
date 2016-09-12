@@ -5,20 +5,20 @@
      :cljs
      (:require [cljs.reader :as cljs-reader]))
   #?(:cljs
-     (:require-macros [ignorabilis.common.env :refer [cljs-env]])))
+     (:require-macros [ignorabilis.common.env :refer [compile-time-env]])))
 
 #?(:clj
-   (defmacro cljs-env []
-     "Environ macro for cljs usage.
-     Use with caution - only compile time values are available in cljs."
+   (defmacro compile-time-env []
+     "Environ macro, containing only compile-time values.
+     Use with caution - only compile time values are available."
      environ/env))
 
 #?(:clj  (defn ienv [kw]
-           (let [env-var (environ/env kw)
+           (let [env-var (or (environ/env kw) ((compile-time-env) kw))
                  parsed-env-var (clj-edn/read-string env-var)]
              parsed-env-var))
    :cljs (defn ienv [kw]
-           (let [env-var ((cljs-env) kw)
+           (let [env-var ((compile-time-env) kw)
                  parsed-env-var (cljs-reader/read-string env-var)]
              parsed-env-var)))
 
