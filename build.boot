@@ -95,7 +95,7 @@
          []
          (comp
            (environ :env {:is-dev    "false"
-                          :http-port "3000"})
+                          :http-port "80"})
            (cljs :optimizations :advanced :compiler-options {:externs ["public/common/common.ext.js"]})
            (aot :all true)
            (pom :project 'ignorabilis
