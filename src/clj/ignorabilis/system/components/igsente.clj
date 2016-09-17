@@ -1,5 +1,5 @@
 (ns ignorabilis.system.components.igsente
-  (:require [ignorabilis.web.ws-handler :as ws-handler]
+  (:require [ignorabilis.web.comm.ws-handler :as ws-handler]
             [mount.core :refer [defstate]]
             [taoensso.sente :as sente]
             [taoensso.sente.server-adapters.http-kit :refer [sente-web-server-adapter]]

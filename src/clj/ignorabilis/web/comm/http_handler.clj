@@ -1,5 +1,5 @@
-(ns ignorabilis.web.http-handler
-  (:require [ignorabilis.web.routes :as routes]
+(ns ignorabilis.web.comm.http-handler
+  (:require [ignorabilis.web.comm.routes :as routes]
             [ring.middleware.defaults :refer [site-defaults]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.content-type :refer [wrap-content-type]]

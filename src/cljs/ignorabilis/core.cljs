@@ -1,14 +1,16 @@
 (ns ignorabilis.core
   (:require [ignorabilis.common.env :refer [ienv dev?]]
             [ignorabilis.comm.channel-sockets :as sockets]
-            [ignorabilis.views.home.core :as home]
             [ignorabilis.common.layout.core :as layout]
             [ignorabilis.services.core :as services]
+            [ignorabilis.web.comm.routes :as wroutes]
+            [ignorabilis.comm.route-handlers :as route-handlers]
             [cljs.core.async :refer [<! >! put! chan]]
             [taoensso.timbre :as timbre]
             [taoensso.sente :as sente :refer [cb-success?]]
             [goog.dom :as gdom]
-            [reagent.core :as r :refer [atom]])
+            [reagent.core :as r :refer [atom]]
+            [reagent.session :as session])
   (:require-macros [cljs.core.async.macros :refer [go go-loop]]))
 
 (defn init-logging []
@@ -20,28 +22,33 @@
 (defn init-plugins []
   (.foundation (js/$ js/document)))
 
+(defn current-page []
+  (let [{:keys [handler]} (session/get :current-page)
+        current-page (route-handlers/handler-key->current-page handler)]
+    [:div
+     [current-page]]))
+
 (defn mount-root []
   (r/render
-    [layout/page-layout home/home-page]
+    [layout/page-layout current-page]
     (gdom/getElement "ignorabilis-app")))
 
-(def router_ (atom nil))
-(defn stop-router! [] (when-let [stop-f @router_] (stop-f)))
-(defn start-router! []
-  (reset! router_ (sente/start-chsk-router! sockets/ch-chsk services/event-msg-handler*)))
-(defn restart-router! []
-  (stop-router!)
-  (start-router!))
+(def ws-router_ (atom nil))
+(defn stop-ws-router! [] (when-let [stop-f @ws-router_] (stop-f)))
+(defn start-ws-router! []
+  (reset! ws-router_ (sente/start-chsk-router! sockets/ch-chsk services/event-msg-handler*)))
+(defn restart-ws-router! []
+  (stop-ws-router!)
+  (start-ws-router!))
 
 (defn start! []
   (init-logging)
   (init-plugins)
-  #_(init-browser-navigation!)
   (sockets/init-channel-sockets)
   (mount-root)
-  (start-router!))
+  (start-ws-router!))
 
 (defn restart! []
-  (restart-router!))
+  (restart-ws-router!))
 
 (start!)

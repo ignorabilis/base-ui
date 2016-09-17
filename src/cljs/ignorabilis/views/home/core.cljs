@@ -1,8 +1,12 @@
 (ns ignorabilis.views.home.core
-  (:require [reagent.core :as r :refer [atom]]
-            [ignorabilis.views.skills.core :as skills]))
+  (:require [ignorabilis.comm.routes :as routes]
+            [ignorabilis.web.comm.routes :as wroutes]
+            [reagent.core :as r :refer [atom]]))
 
 (defn home-page []
   [:div
    "home page here"
-   [skills/skills-page]])
+   [:br]
+   [:a.button
+    {:on-click (fn [_]
+                 (routes/set-current-page! ::wroutes/skills-page))}]])

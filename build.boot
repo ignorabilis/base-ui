@@ -24,7 +24,8 @@
                           [bidi "2.0.9"]
                           [compojure "1.3.4"]
                           [hiccup "1.0.5"]
-                          [reagent "0.6.0-rc"]
+                          [reagent "0.6.0"]
+                          [reagent-utils "0.2.0"]
                           [com.cognitect/transit-clj "0.8.288"]
                           [com.cognitect/transit-cljs "0.8.239"]])
 

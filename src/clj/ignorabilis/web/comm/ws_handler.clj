@@ -1,4 +1,4 @@
-(ns ignorabilis.web.ws-handler
+(ns ignorabilis.web.comm.ws-handler
   (:require [taoensso.timbre :as timbre]))
 
 (defmulti event-msg-handler :id)                            ; Dispatch on event-id

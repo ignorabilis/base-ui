@@ -1,6 +1,6 @@
 (ns ignorabilis.system.components.igweb
   (:require [ignorabilis.common.env :refer [ienv]]
-            [ignorabilis.web.http-handler :as http-handler]
+            [ignorabilis.web.comm.http-handler :as http-handler]
             [mount.core :refer [defstate]]
             [org.httpkit.server :as server]
             [taoensso.timbre :as timbre]))
