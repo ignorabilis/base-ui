@@ -1,0 +1,13 @@
+FROM ignorabilis/boot-openjdk-clj:alpine
+MAINTAINER Irina Yaroslavova Stefanova
+
+COPY . /opt/ignorabilis-src
+
+RUN cd /opt/ignorabilis-src
+
+EXPOSE 80 40000 40001
+
+ENTRYPOINT []
+
+WORKDIR /opt/ignorabilis-src
+CMD boot ignorabilis-dev

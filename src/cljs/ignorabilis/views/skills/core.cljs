@@ -5,8 +5,8 @@
 (defonce skills-state (r/atom {:query "" :skills [{:label "Foundation"}
                                                   {:label "Bootstrap"}
                                                   {:label "C#"}
-                                                  {:label "C1"}
-                                                  {:label "C2"}
+                                                  {:label "Clojure"}
+                                                  {:label "ClojureScript"}
                                                   {:label "C3"}
                                                   {:label "C4"}
                                                   {:label "C5"}

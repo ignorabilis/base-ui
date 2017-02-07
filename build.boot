@@ -108,12 +108,12 @@
 (deftask ignorabilis-dev []
          (comp
            (environ :env {:is-dev    "true"
-                          :http-port "3000"})
+                          :http-port "80"})
            (watch)
            (reload)
-           (cljs-repl :nrepl-opts {:port 40001})
+           (cljs-repl :nrepl-opts {:bind "0.0.0.0" :port 40001})
            (cljs :source-map true)
-           (repl :server true :port 40000)))
+           (repl :server true :bind "0.0.0.0" :port 40000)))
 
 (defn -main [& args]
   (require 'ignorabilis.core)
