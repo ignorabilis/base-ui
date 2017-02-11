@@ -1,7 +1,6 @@
 (ns ignorabilis.web.comm.routes)
 
-(def ig-routes ["" [["" ::home-page]
-                    ["/" {""           ::home-page
-                          "skills"     ::skills-page
-                          "experience" ::experience-page}]
-                    [true ::not-found-page]]])
+(def ig-routes ["" [["" :client-routes/home-page]
+                    ["/" {""           :client-routes/home-page
+                          "skills"     :client-routes/skills-page}]
+                    [true :client-routes/not-found-page]]])

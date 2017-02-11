@@ -110,8 +110,8 @@
            (environ :env {:is-dev    "true"
                           :http-port "80"})
            (watch)
-           (reload)
-           (cljs-repl :nrepl-opts {:bind "0.0.0.0" :port 40001})
+           (reload :ip "0.0.0.0" :port 40002)
+           (cljs-repl :ip "0.0.0.0" :port 40003 :nrepl-opts {:bind "0.0.0.0" :port 40001})
            (cljs :source-map true)
            (repl :server true :bind "0.0.0.0" :port 40000)))
 

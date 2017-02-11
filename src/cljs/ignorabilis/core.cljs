@@ -3,7 +3,6 @@
             [ignorabilis.comm.channel-sockets :as sockets]
             [ignorabilis.common.layout.core :as layout]
             [ignorabilis.services.core :as services]
-            [ignorabilis.web.comm.routes :as wroutes]
             [ignorabilis.comm.route-handlers :as route-handlers]
             [cljs.core.async :refer [<! >! put! chan]]
             [taoensso.timbre :as timbre]
@@ -16,11 +15,12 @@
 (defn init-logging []
   (when dev?
     (enable-console-print!)
-    (timbre/set-level! :trace)
+    (timbre/set-level! :debug)
     (timbre/debug "ClojureScript appears to have loaded correctly.")))
 
 (defn init-plugins []
-  (.foundation (js/$ js/document)))
+  ;init bootstrap ui widgets here if needed
+  )
 
 (defn current-page []
   (let [{:keys [handler]} (session/get :current-page)

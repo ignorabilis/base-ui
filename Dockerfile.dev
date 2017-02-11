@@ -5,7 +5,7 @@ COPY . /opt/ignorabilis-src
 
 RUN cd /opt/ignorabilis-src
 
-EXPOSE 80 40000 40001
+EXPOSE 80 40000 40001 40002 40003
 
 ENTRYPOINT []
 
