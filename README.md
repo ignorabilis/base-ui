@@ -1,25 +1,9 @@
 ## Synopsis
 
-This is my personal website, ignorabilis.com.
+A base repo used for quickly bootstrapping projects using
+Docker, Clojure, ClojureScript, Bootstrap, Boot, Mount, Sente & Timbre.
 
 ## Motivation
 
-I needed a website.
-
-## API Reference
-
-Nothing exposed as an external API as of today.
-
-## Tests
-
-Tests are an unnecessary evil.
-Programming functionally, with a REPL, should be enough to cover me.
-I hope the future will prove me to be right.
-
-## Contributors
-
-Only me, IYS.
-
-## License
-
-This software is mine :D.
+Since all the cool things in clojure require quite the setup this can be used as a reference
+and/or bootstrapping project.
